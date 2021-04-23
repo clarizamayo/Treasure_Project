@@ -6,6 +6,7 @@ import requests
 import json
 
 url = "https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield"
+
 def treasury_data(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text)
@@ -26,4 +27,19 @@ def treasury_data(url):
         print(th_td_list)
     return th_td_list
 
-treasury_data(url)
+def chart():
+    data = treasury_data(url)
+    df = pd.DataFrame(data, columns= ["Date", "1Mo", "2Mo", "3Mo", "6Mo", "1Yr","2Yr","3Yr","5Yr","7Yr", "10Yr", "20Yr", "30Yr"])
+    labels = ["1Yr","2Yr","3Yr","5Yr","7Yr", "10Yr", "20Yr", "30Yr"]
+    fig,ax = plt.subplots(figsize= (20,10))
+    ax.plot(df.groupby("Date")[["1Yr","2Yr","3Yr","5Yr","7Yr", "10Yr", "20Yr", "30Yr"]].sum())
+    ax.set(title= "Treasury data in the last 30 years",ylabel ="Yield Curve Rates", xlabel ="Dates")
+    ax.legend(labels)
+    plt.savefig('../charts/Dailyycr.png')
+
+def main():
+    data = treasury_data(url)
+    chart()
+
+if __name__ == '__main__':
+    main()
