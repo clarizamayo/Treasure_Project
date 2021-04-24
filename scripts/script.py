@@ -24,7 +24,6 @@ def treasury_data(url):
                 td_text = int(''.join(td_text.split('.'))) / 10 ** count_digits
             th_td_data_row.append(td_text)
         th_td_list.append(th_td_data_row)
-        print(th_td_list)
     return th_td_list
 
 def chart():
@@ -35,7 +34,7 @@ def chart():
     ax.plot(df.groupby("Date")[["1Yr","2Yr","3Yr","5Yr","7Yr", "10Yr", "20Yr", "30Yr"]].sum())
     ax.set(title= "Treasury data in the last 30 years",ylabel ="Yield Curve Rates", xlabel ="Dates")
     ax.legend(labels)
-    plt.savefig('../charts/Dailyycr.png')
+    plt.savefig('charts/Dailyycr.png')
 
 def main():
     data = treasury_data(url)
